@@ -40,6 +40,52 @@ class Node {
 		let parent = this.parent;
 
 		if(!!parent) {
+
+			let grandParent = parent.parent;
+			let current = this;
+			let currentLeft = this.left;
+			let currentRight = this.right;
+
+			this.parent = grandParent;
+			if(!!grandParent) {
+				if(parent == grandParent.left) {
+					grandParent.left = this;
+				} else if (parent == grandParent.right) {
+					grandParent.right = this;
+				}
+			}
+
+			parent.parent = current;
+			if(current == parent.left) {
+				this.left = parent;
+				this.right = parent.right;
+
+				if(!!currentLeft) {
+					currentLeft.parent = this.left;
+				}
+
+				if(!!currentRight) {
+					currentRight.parent = this.left;
+				}
+				
+				this.left.left = !currentLeft ? null : currentLeft;
+				this.left.right = !currentRight ? null : currentRight;
+
+			} else if (current == parent.right) {
+				this.right = parent;
+				this.left = parent.left;
+
+				if(!!currentLeft) {
+					currentLeft.parent = this.right;
+				}
+
+				if(!!currentRight) {
+					currentRight.parent = this.right;
+				}
+
+				this.right.left = !currentLeft ? null : currentLeft;
+				this.right.right = !currentRight ? null : currentRight;
+			}
 		}
 	}
 }
